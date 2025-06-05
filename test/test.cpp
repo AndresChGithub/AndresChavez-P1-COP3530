@@ -22,6 +22,8 @@ TEST_CASE("Test 2", "[flag]"){
 	// you can also use "sections" to share setup code between tests, for example:
 	int one = 1;
 
+	// testing again
+
 	SECTION("num is 2") {
 		int num = one + 1;
 		REQUIRE(num == 2);
