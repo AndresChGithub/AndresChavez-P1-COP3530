@@ -150,7 +150,16 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
 
     // Pick 10 random UFIDs to delete
     std::vector<std::string> toRemove;
-    std::sample(allUFIDs.begin(), allUFIDs.end(), std::back_inserter(toRemove), 10, std::mt19937{std::random_device{}()});
+    toRemove.push_back(allUFIDs[5]);
+	toRemove.push_back(allUFIDs[12]);
+	toRemove.push_back(allUFIDs[23]);
+	toRemove.push_back(allUFIDs[34]);
+	toRemove.push_back(allUFIDs[40]);
+	toRemove.push_back(allUFIDs[51]);
+	toRemove.push_back(allUFIDs[66]);
+	toRemove.push_back(allUFIDs[72]);
+	toRemove.push_back(allUFIDs[88]);
+	toRemove.push_back(allUFIDs[95]);
 
     for (const std::string& ufid : toRemove) {
         std::string result = tree.remove(ufid);
