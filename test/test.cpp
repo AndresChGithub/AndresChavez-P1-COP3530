@@ -9,18 +9,20 @@
 
 using namespace std;
 
+// Andres Chavez, 26934004
+
 TEST_CASE("Invalid insert and command handling", "[validation]") {
     AVL tree;
 
     vector<pair<string, string>> invalidInputs = {
-        make_pair("A11y", "12345678"),     // Name with numbers
-        make_pair("John", "1234567"),      // UFID too short
-        make_pair("Jane", "123456789"),    // UFID too long
-        make_pair("", "12345678"),         // Empty name
-        make_pair("Mary@", "87654321"),    // Invalid character
-        make_pair("Alice", "abcdefg1"),    // UFID not numeric
-        make_pair("Bob", "1234567a"),      // UFID with letter
-        make_pair(" Chris", "8765432@")    // Space and special char in UFID
+        make_pair("Carl0s", "26934004"),     // Name with numbers
+        make_pair("John", "2693400"),      // UFID too short
+        make_pair("Jane", "269340044"),    // UFID too long
+        make_pair("", "26934004"),         // Empty name
+        make_pair("TheBest!", "26934004"),    // Invalid character
+        make_pair("Suisei", "notnum24"),    // UFID not numeric
+        make_pair("Okayu", "2693400a"),      // UFID with letter
+        make_pair(" Chris", "269340@4")    // Space and special char in UFID
     };
 
     for (size_t i = 0; i < invalidInputs.size(); ++i) {
@@ -84,22 +86,22 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
     vector<string> allNames;
     vector<string> allUFIDs;
 
-    // Insert 100 unique students
+    // Inserting 100 unique students
     for (int i = 0; i < 100; ++i) {
         string name = "Student" + to_string(i);
         string ufid;
 
         do {
-            int id = 10000000 + rand() % 90000000;
+            int id = 10000000 + rand() % 90000000; // thank you cstdlib
             ufid = to_string(id);
-        } while (!ufidSet.insert(ufid).second); // ensure uniqueness
+        } while (!ufidSet.insert(ufid).second); // somehow found a way to make sure they are unique, a little excessive but o well
 
         tree.insert(name, ufid);
         allNames.push_back(name);
         allUFIDs.push_back(ufid);
     }
 
-    // Pick 10 specific UFIDs to delete (hardcoded)
+    // picking 10 specifics of the 100 unique students
     vector<string> toRemove;
     toRemove.push_back(allUFIDs[5]);
     toRemove.push_back(allUFIDs[12]);
@@ -120,7 +122,7 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
         REQUIRE(found == "unsuccessful");
     }
 
-    // Check total node count = 90
+    // Check that the total node count is 90
     REQUIRE(tree.printLevelCount() >= 1);  // just a check that the tree is still valid
     vector<string> inorder = tree.printInorder();
     REQUIRE(inorder.size() == 90);
