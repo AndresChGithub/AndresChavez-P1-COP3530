@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include <set>
+#include <cstdlib>
 
 #include "../src/AVL.h"
 
@@ -63,23 +64,23 @@ TEST_CASE("Example BST Insert", "[flag]"){
 TEST_CASE("Invalid insert and command handling", "[validation]") {
     AVL tree;
 
-    std::vector<std::pair<std::string, std::string>> invalidInputs = {
-        {"A11y", "12345678"},   // Name with numbers
-        {"John", "1234567"},    // UFID too short
-        {"Jane", "123456789"},  // UFID too long
-        {"", "12345678"},       // Empty name
-        {"Mary@", "87654321"},  // Invalid character
-        {"Alice", "abcdefg1"},  // UFID not numeric
-        {"Bob", "1234567a"},    // UFID with letter
-        {" Chris", "8765432@"}  // Space and special char in UFID
+    vector<pair<string, string>> invalidInputs = {
+        make_pair("A11y", "12345678"),     // Name with numbers
+        make_pair("John", "1234567"),      // UFID too short
+        make_pair("Jane", "123456789"),    // UFID too long
+        make_pair("", "12345678"),         // Empty name
+        make_pair("Mary@", "87654321"),    // Invalid character
+        make_pair("Alice", "abcdefg1"),    // UFID not numeric
+        make_pair("Bob", "1234567a"),      // UFID with letter
+        make_pair(" Chris", "8765432@")    // Space and special char in UFID
     };
 
-	for (const auto& pair : invalidInputs) {
-		const std::string& name = pair.first;
-		const std::string& ufid = pair.second;
-		std::string result = tree.insert(name, ufid);
-		REQUIRE(result == "unsuccessful");
-	}
+    for (size_t i = 0; i < invalidInputs.size(); ++i) {
+        string name = invalidInputs[i].first;
+        string ufid = invalidInputs[i].second;
+        string result = tree.insert(name, ufid);
+        REQUIRE(result == "unsuccessful");
+    }
 }
 
 TEST_CASE("AVL insert with all rotations", "[rotation]") {
@@ -89,10 +90,10 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree.insert("A", "33334444");
         tree.insert("B", "22223333");
         tree.insert("C", "11112222");
-        auto inorder = tree.printInorder();
-        std::vector<std::string> expected = {"C", "B", "A"};
-        std::sort(expected.begin(), expected.end());
-        std::sort(inorder.begin(), inorder.end());
+        vector<string> inorder = tree.printInorder();
+        vector<string> expected = {"C", "B", "A"};
+        sort(expected.begin(), expected.end());
+        sort(inorder.begin(), inorder.end());
         REQUIRE(inorder == expected);
     }
 
@@ -101,8 +102,8 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree2.insert("A", "11112222");
         tree2.insert("B", "22223333");
         tree2.insert("C", "33334444");
-        auto inorder = tree2.printInorder();
-        std::vector<std::string> expected = {"A", "B", "C"};
+        vector<string> inorder = tree2.printInorder();
+        vector<string> expected = {"A", "B", "C"};
         REQUIRE(inorder == expected);
     }
 
@@ -111,10 +112,10 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree3.insert("A", "33334444");
         tree3.insert("C", "11112222");
         tree3.insert("B", "22223333");
-        auto inorder = tree3.printInorder();
-        std::vector<std::string> expected = {"C", "B", "A"};
-        std::sort(expected.begin(), expected.end());
-        std::sort(inorder.begin(), inorder.end());
+        vector<string> inorder = tree3.printInorder();
+        vector<string> expected = {"C", "B", "A"};
+        sort(expected.begin(), expected.end());
+        sort(inorder.begin(), inorder.end());
         REQUIRE(inorder == expected);
     }
 
@@ -123,26 +124,26 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree4.insert("A", "11112222");
         tree4.insert("C", "33334444");
         tree4.insert("B", "22223333");
-        auto inorder = tree4.printInorder();
-        std::vector<std::string> expected = {"A", "B", "C"};
+        vector<string> inorder = tree4.printInorder();
+        vector<string> expected = {"A", "B", "C"};
         REQUIRE(inorder == expected);
     }
 }
 
 TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
     AVL tree;
-    std::set<std::string> ufidSet;
-    std::vector<std::string> allNames;
-    std::vector<std::string> allUFIDs;
+    set<string> ufidSet;
+    vector<string> allNames;
+    vector<string> allUFIDs;
 
     // Insert 100 unique students
     for (int i = 0; i < 100; ++i) {
-        std::string name = "Student" + std::to_string(i);
-        std::string ufid;
+        string name = "Student" + to_string(i);
+        string ufid;
 
         do {
             int id = 10000000 + rand() % 90000000;
-            ufid = std::to_string(id);
+            ufid = to_string(id);
         } while (!ufidSet.insert(ufid).second); // ensure uniqueness
 
         tree.insert(name, ufid);
@@ -150,28 +151,29 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
         allUFIDs.push_back(ufid);
     }
 
-    // Pick 10 random UFIDs to delete
-    std::vector<std::string> toRemove;
+    // Pick 10 specific UFIDs to delete (hardcoded)
+    vector<string> toRemove;
     toRemove.push_back(allUFIDs[5]);
-	toRemove.push_back(allUFIDs[12]);
-	toRemove.push_back(allUFIDs[23]);
-	toRemove.push_back(allUFIDs[34]);
-	toRemove.push_back(allUFIDs[40]);
-	toRemove.push_back(allUFIDs[51]);
-	toRemove.push_back(allUFIDs[66]);
-	toRemove.push_back(allUFIDs[72]);
-	toRemove.push_back(allUFIDs[88]);
-	toRemove.push_back(allUFIDs[95]);
+    toRemove.push_back(allUFIDs[12]);
+    toRemove.push_back(allUFIDs[23]);
+    toRemove.push_back(allUFIDs[34]);
+    toRemove.push_back(allUFIDs[40]);
+    toRemove.push_back(allUFIDs[51]);
+    toRemove.push_back(allUFIDs[66]);
+    toRemove.push_back(allUFIDs[72]);
+    toRemove.push_back(allUFIDs[88]);
+    toRemove.push_back(allUFIDs[95]);
 
-    for (const std::string& ufid : toRemove) {
-        std::string result = tree.remove(ufid);
+    for (size_t i = 0; i < toRemove.size(); ++i) {
+        string ufid = toRemove[i];
+        string result = tree.remove(ufid);
         REQUIRE(result == "successful");
-        auto found = tree.searchByID(ufid);
+        string found = tree.searchByID(ufid);
         REQUIRE(found == "unsuccessful");
     }
 
     // Check total node count = 90
     REQUIRE(tree.printLevelCount() >= 1);  // just a check that the tree is still valid
-    auto inorder = tree.printInorder();
+    vector<string> inorder = tree.printInorder();
     REQUIRE(inorder.size() == 90);
 }
