@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 
-#include "AVL.h"
+#include "../src/AVL.h"
 
 using namespace std;
 
