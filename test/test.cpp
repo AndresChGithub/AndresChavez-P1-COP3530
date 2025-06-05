@@ -9,8 +9,6 @@
 
 using namespace std;
 
-// THE GREAT DIVIDE
-
 TEST_CASE("Invalid insert and command handling", "[validation]") {
     AVL tree;
 
