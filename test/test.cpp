@@ -74,10 +74,12 @@ TEST_CASE("Invalid insert and command handling", "[validation]") {
         {" Chris", "8765432@"}  // Space and special char in UFID
     };
 
-    for (const auto& [name, ufid] : invalidInputs) {
-        std::string result = tree.insert(name, ufid);
-        REQUIRE(result == "unsuccessful");
-    }
+	for (const auto& pair : invalidInputs) {
+		const std::string& name = pair.first;
+		const std::string& ufid = pair.second;
+		std::string result = tree.insert(name, ufid);
+		REQUIRE(result == "unsuccessful");
+	}
 }
 
 TEST_CASE("AVL insert with all rotations", "[rotation]") {
