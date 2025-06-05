@@ -1,8 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 
-// uncomment and replace the following with your own headers
-// #include "AVL.h"
+#include "AVL.h"
 
 using namespace std;
 
