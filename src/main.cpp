@@ -4,46 +4,51 @@
 #include <regex>
 #include <cctype>
 
-bool isValidName(const std::string& name) {
+using namespace std;
+
+bool isValidName(const string& name) {
     for (char ch : name) {
         if (!isalpha(ch) && ch != ' ')
             return false;
     }
+
     return true;
 }
 
-bool isValidUFID(const std::string& id) {
+bool isValidUFID(const string& id) {
     if (id.length() != 8)
         return false;
+
     for (char ch : id) {
         if (!isdigit(ch))
             return false;
     }
+
     return true;
 }
 
 int main() {
     int commandCount;
-    std::cin >> commandCount;
-    std::cin.ignore();  // To consume the newline after the number
+    cin >> commandCount;
+    cin.ignore();  // To skip the newline after the number
 
     for (int i = 0; i < commandCount; ++i) {
-        std::string line;
-        getline(std::cin, line);
+        string line;
+        getline(cin, line);
 
-        std::stringstream ss(line);
-        std::string command;
+        istringstream ss(line);
+        string command;
         ss >> command;
 
         if (command == "insert") {
-            std::string name;
-            std::string id;
+            string name;
+            string id;
 
             // Parse name (surrounded by quotes)
-            size_t firstQuote = line.find('"');
-            size_t lastQuote = line.rfind('"');
-            if (firstQuote == std::string::npos || lastQuote == std::string::npos || firstQuote == lastQuote) {
-                std::cout << "unsuccessful\n";
+            int firstQuote = line.find('"');
+            int lastQuote = line.rfind('"');
+            if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
+                cout << "unsuccessful\n";
                 continue;
             }
 
@@ -54,69 +59,75 @@ int main() {
             ss >> id;
 
             if (!isValidName(name) || !isValidUFID(id)) {
-                std::cout << "unsuccessful\n";
+                cout << "unsuccessful\n";
                 continue;
             }
 
             // insert(name, id); <-- implement this later
-            std::cout << "successful\n";
+            cout << "successful\n";
 
-        } else if (command == "remove") {
-            std::string arg;
-            ss >> arg;
+        }
+		else if (command == "remove") {
+            string id;
+            ss >> id;
 
-            if (!isValidUFID(arg)) {
-                std::cout << "unsuccessful\n";
+            if (!isValidUFID(id)) {
+                cout << "unsuccessful\n";
                 continue;
             }
 
             // remove(arg); <-- implement this later
-            std::cout << "successful\n";
+            cout << "successful\n";
 
-        } else if (command == "search") {
-            std::string remaining;
+        }
+		else if (command == "search") {
+            string remaining;
             getline(ss, remaining);
-            size_t quoteStart = remaining.find('"');
-            if (quoteStart != std::string::npos) {
-                size_t quoteEnd = remaining.rfind('"');
-                if (quoteEnd == std::string::npos || quoteEnd == quoteStart) {
-                    std::cout << "unsuccessful\n";
+            int quoteStart = remaining.find('"');
+            if (quoteStart != string::npos) {
+                int quoteEnd = remaining.rfind('"');
+                if (quoteEnd == string::npos || quoteEnd == quoteStart) {
+                    cout << "unsuccessful\n";
                     continue;
                 }
-                std::string name = remaining.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
+                string name = remaining.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
                 if (!isValidName(name)) {
-                    std::cout << "unsuccessful\n";
+                    cout << "unsuccessful\n";
                     continue;
                 }
                 // searchByName(name); <-- implement this later
-                std::cout << "successful\n";
-            } else {
-                std::string id;
+                cout << "successful\n";
+            } 
+			else {
+                string id;
                 ss >> id;
                 if (!isValidUFID(id)) {
-                    std::cout << "unsuccessful\n";
+                    cout << "unsuccessful\n";
                     continue;
                 }
                 // searchByID(id); <-- implement this later
-                std::cout << "successful\n";
+                cout << "successful\n";
             }
 
-        } else if (command == "printInorder" || command == "printPreorder" || 
+        }
+		else if (command == "printInorder" || command == "printPreorder" || 
                    command == "printPostorder" || command == "printLevelCount") {
             // Call corresponding function later
-            std::cout << "successful\n";
+            cout << "successful\n";
 
-        } else if (command == "removeInorder") {
+        } 
+		else if (command == "removeInorder") {
             int n;
             if (!(ss >> n)) {
-                std::cout << "unsuccessful\n";
+                cout << "unsuccessful\n";
                 continue;
             }
             // removeInorder(n); <-- implement this later
-            std::cout << "successful\n";
+            cout << "successful\n";
 
-        } else {
-            std::cout << "unsuccessful\n";
+        } 
+		else {
+            cout << "unsuccessful\n";
         }
     }
 
