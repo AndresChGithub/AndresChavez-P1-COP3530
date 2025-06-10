@@ -59,4 +59,19 @@ public:
     int printLevelCount();
 };
 
+// separator cause, well, yknow
+
+template <typename T>
+struct Node {
+	typedef T value_type;
+
+	Node(value_type value, Node<T> *left = nullptr, Node<T> *right = nullptr)
+	: value(value), left(left), right(right), height(0) {}
+
+	value_type value;
+	Node<T> *left;
+	Node<T> *right;
+	size_t height;
+};
+
 #endif // AVL_H
