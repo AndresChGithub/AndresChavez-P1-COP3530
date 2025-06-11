@@ -198,12 +198,14 @@ int main() {
             int n;
             ss >> n;
             tree.removeInorder(n);
+            cout << "succesful" << endl;
         }
 
-                else {
-                    cout << "unsuccessful\n";
-                }
-            }
+        else {
+            cout << "unsuccessful\n";
+        }
+
+    }
 
     return 0;
 }
