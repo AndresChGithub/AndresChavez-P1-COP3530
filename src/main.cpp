@@ -48,8 +48,8 @@ int main() {
             string id;
 
             // Parse name (surrounded by quotes)
-            int firstQuote = line.find('"');
-            int lastQuote = line.rfind('"');
+            size_t firstQuote = line.find('"');
+            size_t lastQuote = line.rfind('"');
             if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
                 cout << "unsuccessful\n";
                 continue;
@@ -117,8 +117,8 @@ int main() {
 
             if (nextToken.front() == '"') {
                 // search NAME
-                int firstQuote = line.find('"');
-                int lastQuote = line.rfind('"');
+                size_t firstQuote = line.find('"');
+                size_t lastQuote = line.rfind('"');
 
                 if (firstQuote == std::string::npos || lastQuote == std::string::npos || firstQuote == lastQuote) {
                     std::cout << "unsuccessful\n";
@@ -143,7 +143,7 @@ int main() {
                     }
                 }
             } 
-            
+
             else {
                 // search ID
                 std::string id = nextToken;
