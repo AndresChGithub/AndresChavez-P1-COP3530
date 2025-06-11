@@ -20,10 +20,8 @@ FetchContent_MakeAvailable(Catch2)
 include_directories(src)
 
 add_executable(Main
-        src/main.cpp # your main file
-        # add your own header files below - should be automatically added in CLion
-        # example (can also separate with newlines):
-        # src/AVL.h src/AVL.cpp
+        src/main.cpp
+        src/AVL.cpp
         )
         
 # These tests can use the Catch2-provided main
