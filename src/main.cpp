@@ -3,6 +3,7 @@
 #include <string>
 #include <regex>
 #include <cctype>
+#include "AVL.h"
 
 using namespace std;
 
@@ -31,6 +32,8 @@ int main() {
     int commandCount;
     cin >> commandCount;
     cin.ignore();  // To skip the newline after the number
+
+    AVL tree;
 
     for (int i = 0; i < commandCount; ++i) {
         string line;
@@ -63,8 +66,7 @@ int main() {
                 continue;
             }
 
-            // insert(name, id); <-- implement this later
-            cout << "successful\n";
+            cout << tree.insert(name, id) << endl;
 
         }
 		else if (command == "remove") {
