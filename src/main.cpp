@@ -81,36 +81,81 @@ int main() {
             cout << tree.remove(id) << endl;
 
         }
-		else if (command == "search") {
-            string remaining;
-            getline(ss, remaining);
-            int quoteStart = remaining.find('"');
-            if (quoteStart != string::npos) {
-                int quoteEnd = remaining.rfind('"');
-                if (quoteEnd == string::npos || quoteEnd == quoteStart) {
-                    cout << "unsuccessful\n";
-                    continue;
-                }
-                string name = remaining.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
-                if (!isValidName(name)) {
-                    cout << "unsuccessful\n";
-                    continue;
-                }
-                // searchByName(name); <-- implement this later
-                cout << "successful\n";
-            } 
-			else {
-                string id;
-                ss >> id;
-                if (!isValidUFID(id)) {
-                    cout << "unsuccessful\n";
-                    continue;
-                }
-                // searchByID(id); <-- implement this later
-                cout << "successful\n";
-            }
+		// else if (command == "search") {
+        //     string remaining;
+        //     getline(ss, remaining);
+        //     int quoteStart = remaining.find('"');
+        //     if (quoteStart != string::npos) {
+        //         int quoteEnd = remaining.rfind('"');
+        //         if (quoteEnd == string::npos || quoteEnd == quoteStart) {
+        //             cout << "unsuccessful\n";
+        //             continue;
+        //         }
+        //         string name = remaining.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
+        //         if (!isValidName(name)) {
+        //             cout << "unsuccessful\n";
+        //             continue;
+        //         }
+        //         // searchByName(name); <-- implement this later
+        //         cout << "successful\n";
+        //     } 
+		// 	else {
+        //         string id;
+        //         ss >> id;
+        //         if (!isValidUFID(id)) {
+        //             cout << "unsuccessful\n";
+        //             continue;
+        //         }
+        //         // searchByID(id); <-- implement this later
+        //         cout << "successful\n";
+        //     }
 
+        // }
+        else if (command == "search") {
+            std::string nextToken;
+            ss >> nextToken;
+
+            if (nextToken.front() == '"') {
+                // search NAME
+                int firstQuote = line.find('"');
+                int lastQuote = line.rfind('"');
+
+                if (firstQuote == std::string::npos || lastQuote == std::string::npos || firstQuote == lastQuote) {
+                    std::cout << "unsuccessful\n";
+                    continue;
+                }
+
+                std::string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
+
+                if (!isValidName(name)) {
+                    std::cout << "unsuccessful\n";
+                    continue;
+                }
+
+                std::vector<std::string> results = tree.searchByName(name);
+                if (results.empty()) {
+                    std::cout << "unsuccessful\n";
+                } 
+
+                else {
+                    for (const auto& id : results) {
+                        std::cout << id << "\n";
+                    }
+                }
+            } 
+            
+            else {
+                // search ID
+                std::string id = nextToken;
+                if (!isValidUFID(id)) {
+                    std::cout << "unsuccessful\n";
+                    continue;
+                }
+
+                std::cout << tree.searchByID(id) << "\n";
+            }
         }
+
 		else if (command == "printInorder" || command == "printPreorder" || 
                    command == "printPostorder" || command == "printLevelCount") {
             // Call corresponding function later

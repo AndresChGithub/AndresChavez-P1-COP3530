@@ -182,3 +182,49 @@ std::string AVL::remove(const std::string& ufid) {
     root = remove(root, ufid, success);
     return success ? "successful" : "unsuccessful";
 }
+
+// === Search by ID (single result) ===
+AVL::Node* AVL::searchByID(Node* node, const std::string& ufid) {
+    if (!node) return nullptr;
+    if (ufid == node->UFID) return node;
+    if (ufid < node->UFID) return searchByID(node->left, ufid);
+    return searchByID(node->right, ufid);
+}
+
+std::string AVL::searchByID(const std::string& ufid) {
+    Node* result = searchByID(root, ufid);
+    return result ? result->name : "unsuccessful";
+}
+
+// === Search by Name (may be multiple matches) ===
+void AVL::searchByName(Node* node, const std::string& name, std::vector<std::string>& matches) {
+    if (!node) return;
+
+    if (node->name == name) {
+        matches.push_back(node->UFID);
+    }
+
+    searchByName(node->left, name, matches);
+    searchByName(node->right, name, matches);
+}
+
+std::vector<std::string> AVL::searchByName(const std::string& name) {
+    std::vector<std::string> matches;
+    // Traverse in pre-order (for required output order)
+    std::vector<Node*> stack;
+    if (root) stack.push_back(root);
+
+    while (!stack.empty()) {
+        Node* current = stack.back();
+        stack.pop_back();
+
+        if (current->name == name)
+            matches.push_back(current->UFID);
+
+        // Push right first so left is processed first
+        if (current->right) stack.push_back(current->right);
+        if (current->left) stack.push_back(current->left);
+    }
+
+    return matches;
+}
