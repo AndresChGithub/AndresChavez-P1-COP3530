@@ -229,11 +229,6 @@ vector<string> AVL::searchByName(const string& name) {
     return matches;
 }
 
-int AVL::getHeight(Node* node) {
-    if (!node) return 0;
-    return node->height;
-}
-
 int AVL::printLevelCount() {
     return getHeight(root);
 }
@@ -275,4 +270,23 @@ vector<string> AVL::printPostorder() {
     vector<string> result;
     postorder(root, result);
     return result;
+}
+
+void AVL::inorderCollect(Node* node, std::vector<std::string>& ids) {
+    if (!node) return;
+    inorderCollect(node->left, ids);
+    ids.push_back(node->UFID);  // Store GatorID (not name)
+    inorderCollect(node->right, ids);
+}
+
+void AVL::removeInorder(int N) {
+    std::vector<std::string> ids;
+    inorderCollect(root, ids);
+
+    if (N < 0 || N >= static_cast<int>(ids.size())) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+
+    remove(ids[N]); // Reuse your existing AVL remove logic
 }

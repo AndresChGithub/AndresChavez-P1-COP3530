@@ -24,9 +24,9 @@ private:
     // ========== Private Helper Methods (To Be Implemented) ==========
     Node* insert(Node* node, const string& name, const string& ufid, bool& success);
     Node* remove(Node* node, const string& ufid, bool& success);
-    Node* removeInorder(Node* node, int& count, int target, bool& success);
     Node* searchByID(Node* node, const string& ufid);
     void searchByName(Node* node, const string& name, vector<string>& matches);
+    void inorderCollect(Node* node, std::vector<std::string>& ids);
 
     void inorder(Node* node, vector<string>& result);
     void preorder(Node* node, vector<string>& result);
@@ -53,7 +53,7 @@ public:
     // ========== Public Interface for Testing ==========
     string insert(const string& name, const string& ufid);
     string remove(const string& ufid);
-    string removeInorder(int n);
+    void removeInorder(int n);
     string searchByID(const string& ufid);
     vector<string> searchByName(const string& name);
     vector<string> printInorder();

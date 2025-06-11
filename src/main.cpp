@@ -156,12 +156,12 @@ int main() {
             }
         }
 
-		else if (command == "printInorder" || command == "printPreorder" || 
-                   command == "printPostorder" || command == "printLevelCount") {
-            // Call corresponding function later
-            cout << "successful\n";
+		// else if (command == "printInorder" || command == "printPreorder" || 
+        //            command == "printPostorder" || command == "printLevelCount") {
+        //     // Call corresponding function later
+        //     cout << "successful\n";
 
-        }
+        // }
 
         else if (command == "printInorder") {
             std::vector<std::string> names = tree.printInorder();
@@ -196,18 +196,14 @@ int main() {
 
 		else if (command == "removeInorder") {
             int n;
-            if (!(ss >> n)) {
-                cout << "unsuccessful\n";
-                continue;
-            }
-            // removeInorder(n); <-- implement this later
-            cout << "successful\n";
-
-        } 
-		else {
-            cout << "unsuccessful\n";
+            ss >> n;
+            tree.removeInorder(n);
         }
-    }
+
+                else {
+                    cout << "unsuccessful\n";
+                }
+            }
 
     return 0;
 }
