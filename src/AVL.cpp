@@ -1,6 +1,8 @@
 #include "AVL.h"
 #include <iostream>
 
+using namespace std;
+
 AVL::AVL() : root(nullptr) {}
 
 AVL::~AVL() {
@@ -57,7 +59,7 @@ AVL::Node* AVL::rotateLeft(Node* x) {
     return y;
 }
 
-AVL::Node* AVL::insert(Node* node, const std::string& name, const std::string& ufid, bool& success) {
+AVL::Node* AVL::insert(Node* node, const string& name, const string& ufid, bool& success) {
     if (!node) {
         success = true;
         return new Node(name, ufid);
@@ -98,8 +100,85 @@ AVL::Node* AVL::insert(Node* node, const std::string& name, const std::string& u
     return node;  // No rotation needed
 }
 
-std::string AVL::insert(const std::string& name, const std::string& ufid) {
+string AVL::insert(const string& name, const string& ufid) {
     bool success = false;
     root = insert(root, name, ufid, success);
+    return success ? "successful" : "unsuccessful";
+}
+
+AVL::Node* AVL::minValueNode(Node* node) {
+    Node* current = node;
+    while (current->left)
+        current = current->left;
+    return current;
+}
+
+AVL::Node* AVL::remove(Node* node, const std::string& ufid, bool& success) {
+    if (!node) {
+        success = false;
+        return nullptr;
+    }
+
+    if (ufid < node->UFID) {
+        node->left = remove(node->left, ufid, success);
+    } else if (ufid > node->UFID) {
+        node->right = remove(node->right, ufid, success);
+    } else {
+        // Node to be deleted found
+        success = true;
+
+        // Node with one child or no child
+        if (!node->left || !node->right) {
+            Node* temp = node->left ? node->left : node->right;
+            if (!temp) {
+                temp = node;
+                node = nullptr;
+            } else {
+                *node = *temp;
+            }
+            delete temp;
+        } else {
+            // Node with two children: Get inorder successor
+            Node* temp = minValueNode(node->right);
+            node->name = temp->name;
+            node->UFID = temp->UFID;
+            node->right = remove(node->right, temp->UFID, success);
+        }
+    }
+
+    if (!node) return node;
+
+    // Update height
+    node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+
+    // Balance
+    int balance = getBalance(node);
+
+    // Left Heavy
+    if (balance > 1) {
+        if (getBalance(node->left) >= 0)
+            return rotateRight(node); // LL
+        else {
+            node->left = rotateLeft(node->left); // LR
+            return rotateRight(node);
+        }
+    }
+
+    // Right Heavy
+    if (balance < -1) {
+        if (getBalance(node->right) <= 0)
+            return rotateLeft(node); // RR
+        else {
+            node->right = rotateRight(node->right); // RL
+            return rotateLeft(node);
+        }
+    }
+
+    return node;
+}
+
+std::string AVL::remove(const std::string& ufid) {
+    bool success = false;
+    root = remove(root, ufid, success);
     return success ? "successful" : "unsuccessful";
 }

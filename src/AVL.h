@@ -36,6 +36,7 @@ private:
     int getBalance(Node* node);
     int getHeight(Node* node);
     int max(int a, int b);
+    Node* minValueNode(Node* node);
 
     // Rotations
     Node* rotateLeft(Node* y);

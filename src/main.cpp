@@ -78,8 +78,7 @@ int main() {
                 continue;
             }
 
-            // remove(arg); <-- implement this later
-            cout << "successful\n";
+            cout << tree.remove(id) << endl;
 
         }
 		else if (command == "search") {
