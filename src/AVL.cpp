@@ -113,7 +113,7 @@ AVL::Node* AVL::minValueNode(Node* node) {
     return current;
 }
 
-AVL::Node* AVL::remove(Node* node, const std::string& ufid, bool& success) {
+AVL::Node* AVL::remove(Node* node, const string& ufid, bool& success) {
     if (!node) {
         success = false;
         return nullptr;
@@ -177,27 +177,27 @@ AVL::Node* AVL::remove(Node* node, const std::string& ufid, bool& success) {
     return node;
 }
 
-std::string AVL::remove(const std::string& ufid) {
+string AVL::remove(const string& ufid) {
     bool success = false;
     root = remove(root, ufid, success);
     return success ? "successful" : "unsuccessful";
 }
 
 // === Search by ID (single result) ===
-AVL::Node* AVL::searchByID(Node* node, const std::string& ufid) {
+AVL::Node* AVL::searchByID(Node* node, const string& ufid) {
     if (!node) return nullptr;
     if (ufid == node->UFID) return node;
     if (ufid < node->UFID) return searchByID(node->left, ufid);
     return searchByID(node->right, ufid);
 }
 
-std::string AVL::searchByID(const std::string& ufid) {
+string AVL::searchByID(const string& ufid) {
     Node* result = searchByID(root, ufid);
     return result ? result->name : "unsuccessful";
 }
 
 // === Search by Name (may be multiple matches) ===
-void AVL::searchByName(Node* node, const std::string& name, std::vector<std::string>& matches) {
+void AVL::searchByName(Node* node, const string& name, vector<string>& matches) {
     if (!node) return;
 
     if (node->name == name) {
@@ -208,10 +208,10 @@ void AVL::searchByName(Node* node, const std::string& name, std::vector<std::str
     searchByName(node->right, name, matches);
 }
 
-std::vector<std::string> AVL::searchByName(const std::string& name) {
-    std::vector<std::string> matches;
+vector<string> AVL::searchByName(const string& name) {
+    vector<string> matches;
     // Traverse in pre-order (for required output order)
-    std::vector<Node*> stack;
+    vector<Node*> stack;
     if (root) stack.push_back(root);
 
     while (!stack.empty()) {
@@ -227,4 +227,52 @@ std::vector<std::string> AVL::searchByName(const std::string& name) {
     }
 
     return matches;
+}
+
+int AVL::getHeight(Node* node) {
+    if (!node) return 0;
+    return node->height;
+}
+
+int AVL::printLevelCount() {
+    return getHeight(root);
+}
+
+void AVL::inorder(Node* node, vector<string>& result) {
+    if (!node) return;
+    inorder(node->left, result);
+    result.push_back(node->name);
+    inorder(node->right, result);
+}
+
+void AVL::preorder(Node* node, vector<string>& result) {
+    if (!node) return;
+    result.push_back(node->name);
+    preorder(node->left, result);
+    preorder(node->right, result);
+}
+
+void AVL::postorder(Node* node, vector<string>& result) {
+    if (!node) return;
+    postorder(node->left, result);
+    postorder(node->right, result);
+    result.push_back(node->name);
+}
+
+vector<string> AVL::printInorder() {
+    vector<string> result;
+    inorder(root, result);
+    return result;
+}
+
+vector<string> AVL::printPreorder() {
+    vector<string> result;
+    preorder(root, result);
+    return result;
+}
+
+vector<string> AVL::printPostorder() {
+    vector<string> result;
+    postorder(root, result);
+    return result;
 }

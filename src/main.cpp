@@ -161,7 +161,39 @@ int main() {
             // Call corresponding function later
             cout << "successful\n";
 
-        } 
+        }
+
+        else if (command == "printInorder") {
+            std::vector<std::string> names = tree.printInorder();
+            for (size_t i = 0; i < names.size(); ++i) {
+                std::cout << names[i];
+                if (i != names.size() - 1)
+                    std::cout << ", ";
+            }
+            std::cout << std::endl;
+        }
+        else if (command == "printPreorder") {
+            std::vector<std::string> names = tree.printPreorder();
+            for (size_t i = 0; i < names.size(); ++i) {
+                std::cout << names[i];
+                if (i != names.size() - 1)
+                    std::cout << ", ";
+            }
+            std::cout << std::endl;
+        }
+        else if (command == "printPostorder") {
+            std::vector<std::string> names = tree.printPostorder();
+            for (size_t i = 0; i < names.size(); ++i) {
+                std::cout << names[i];
+                if (i != names.size() - 1)
+                    std::cout << ", ";
+            }
+            std::cout << std::endl;
+        }
+        else if (command == "printLevelCount") {
+            std::cout << tree.printLevelCount() << std::endl;
+        }
+
 		else if (command == "removeInorder") {
             int n;
             if (!(ss >> n)) {
