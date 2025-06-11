@@ -25,7 +25,7 @@ TEST_CASE("Invalid insert and command handling", "[validation]") {
         make_pair(" Chris", "269340@4")    // Space and special char in UFID
     };
 
-    for (int i = 0; i < invalidInputs.size(); ++i) {
+    for (size_t i = 0; i < invalidInputs.size(); ++i) {
         string name = invalidInputs[i].first;
         string ufid = invalidInputs[i].second;
         string result = tree.insert(name, ufid);
