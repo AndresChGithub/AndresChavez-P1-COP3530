@@ -272,7 +272,7 @@ vector<string> AVL::printPostorder() {
     return result;
 }
 
-void AVL::inorderCollect(Node* node, std::vector<std::string>& ids) {
+void AVL::inorderCollect(Node* node, vector<string>& ids) {
     if (!node) return;
     inorderCollect(node->left, ids);
     ids.push_back(node->UFID);  // Store GatorID (not name)
@@ -280,11 +280,11 @@ void AVL::inorderCollect(Node* node, std::vector<std::string>& ids) {
 }
 
 void AVL::removeInorder(int N) {
-    std::vector<std::string> ids;
+    vector<string> ids;
     inorderCollect(root, ids);
 
     if (N < 0 || N >= static_cast<int>(ids.size())) {
-        std::cout << "unsuccessful" << std::endl;
+        cout << "unsuccessful" << endl;
         return;
     }
 

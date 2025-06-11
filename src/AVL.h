@@ -26,7 +26,7 @@ private:
     Node* remove(Node* node, const string& ufid, bool& success);
     Node* searchByID(Node* node, const string& ufid);
     void searchByName(Node* node, const string& name, vector<string>& matches);
-    void inorderCollect(Node* node, std::vector<std::string>& ids);
+    void inorderCollect(Node* node, vector<string>& ids);
 
     void inorder(Node* node, vector<string>& result);
     void preorder(Node* node, vector<string>& result);
