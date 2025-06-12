@@ -21,7 +21,7 @@ private:
 
     Node* root;
 
-    // ========== Private Helper Methods (To Be Implemented) ==========
+    // private helper methods:
     Node* insert(Node* node, const string& name, const string& ufid, bool& success);
     Node* remove(Node* node, const string& ufid, bool& success);
     Node* searchByID(Node* node, const string& ufid);
@@ -41,8 +41,6 @@ private:
     // Rotations
     Node* rotateLeft(Node* y);
     Node* rotateRight(Node* x);
-    Node* rotateLeftRight(Node* node);
-    Node* rotateRightLeft(Node* node);
 
     void destroy(Node* node);
 
