@@ -9,6 +9,7 @@ AVL::~AVL() {
     destroy(root);
 }
 
+// using recursion to implement this destroy
 void AVL::destroy(Node* node) {
     if (!node) return;
     destroy(node->left);
@@ -16,6 +17,7 @@ void AVL::destroy(Node* node) {
     delete node;
 }
 
+// using ternary operators for simple "if-else" statements like this
 int AVL::getHeight(Node* node) {
     return node ? node->height : 0;
 }
@@ -28,35 +30,36 @@ int AVL::getBalance(Node* node) {
     return node ? getHeight(node->left) - getHeight(node->right) : 0;
 }
 
-// Rotations
-AVL::Node* AVL::rotateRight(Node* y) {
+// rotations
+
+AVL::Node* AVL::rightRotate(Node* y) {
     Node* x = y->left;
     Node* T2 = x->right;
 
-    // Perform rotation
+    // doing the rotation
     x->right = y;
     y->left = T2;
 
-    // Update heights
+    // updating heights
     y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
     x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
 
-    return x;
+    return x; // this is our new root after rotation
 }
 
-AVL::Node* AVL::rotateLeft(Node* x) {
+AVL::Node* AVL::leftRotate(Node* x) {
     Node* y = x->right;
     Node* T2 = y->left;
 
-    // Perform rotation
+    // doing the rotation
     y->left = x;
     x->right = T2;
 
-    // Update heights
+    // updating heights
     x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
     y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
 
-    return y;
+    return y; // this is our new root after rotation
 }
 
 AVL::Node* AVL::insert(Node* node, const string& name, const string& ufid, bool& success) {
@@ -67,45 +70,51 @@ AVL::Node* AVL::insert(Node* node, const string& name, const string& ufid, bool&
 
     if (ufid < node->UFID) {
         node->left = insert(node->left, name, ufid, success);
-    } else if (ufid > node->UFID) {
+    } 
+
+    else if (ufid > node->UFID) {
         node->right = insert(node->right, name, ufid, success);
-    } else {
-        success = false;  // Duplicate UFID
+    } 
+
+    else {
+        success = false;  // making sure that no duplicates are allowed
         return node;
     }
 
-    // Update height
+    // updating height after insert is called
     node->height = 1 + max(getHeight(node->left), getHeight(node->right));
 
-    // Balance factor
+    // to check our tree's balance after calling insert()
     int balance = getBalance(node);
 
-    // 4 Imbalance Cases
+    // all of the important rotation cases, LL, RR, LR, RL.
     if (balance > 1 && ufid < node->left->UFID)
-        return rotateRight(node);
+        return rightRotate(node);
 
     if (balance < -1 && ufid > node->right->UFID)
-        return rotateLeft(node);
+        return leftRotate(node);
 
     if (balance > 1 && ufid > node->left->UFID) {
-        node->left = rotateLeft(node->left);
-        return rotateRight(node);
+        node->left = leftRotate(node->left);
+        return rightRotate(node);
     }
 
     if (balance < -1 && ufid < node->right->UFID) {
-        node->right = rotateRight(node->right);
-        return rotateLeft(node);
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
     }
 
-    return node;  // No rotation needed
+    return node;
 }
 
+// having an insert wrapper makes things easier to understand and read for me
 string AVL::insert(const string& name, const string& ufid) {
     bool success = false;
     root = insert(root, name, ufid, success);
     return success ? "successful" : "unsuccessful";
 }
 
+// our helper for remove(), gets smallest value in a subtree
 AVL::Node* AVL::minValueNode(Node* node) {
     Node* current = node;
     while (current->left)
@@ -121,24 +130,38 @@ AVL::Node* AVL::remove(Node* node, const string& ufid, bool& success) {
 
     if (ufid < node->UFID) {
         node->left = remove(node->left, ufid, success);
-    } else if (ufid > node->UFID) {
+    } 
+
+    else if (ufid > node->UFID) {
         node->right = remove(node->right, ufid, success);
-    } else {
-        // Node to be deleted found
+    } 
+
+    else {
+        // after our recursion steps, this is the case where we found the node to delete
         success = true;
 
-        // Node with one child or no child
         if (!node->left || !node->right) {
             Node* temp = node->left ? node->left : node->right;
+
             if (!temp) {
                 temp = node;
                 node = nullptr;
-            } else {
-                *node = *temp;
+            } 
+
+            else {
+                node->name = temp->name;
+                node->UFID = temp->UFID;
+                node->height = temp->height;
+                node->left = temp->left;
+                node->right = temp->right;
             }
+
             delete temp;
-        } else {
-            // Node with two children: Get inorder successor
+
+        } 
+        
+        else {
+            // this is for the case it has two kids, we use a successor
             Node* temp = minValueNode(node->right);
             node->name = temp->name;
             node->UFID = temp->UFID;
@@ -148,42 +171,44 @@ AVL::Node* AVL::remove(Node* node, const string& ufid, bool& success) {
 
     if (!node) return node;
 
-    // Update height
+    // updating height
     node->height = 1 + max(getHeight(node->left), getHeight(node->right));
 
-    // Balance
+    // balancing even though it's optional because balancing in insert() wasn't that hard and it's similar
     int balance = getBalance(node);
 
-    // Left Heavy
+    // left heavy
     if (balance > 1) {
         if (getBalance(node->left) >= 0)
-            return rotateRight(node); // LL
+            return rightRotate(node); // LL
         else {
-            node->left = rotateLeft(node->left); // LR
-            return rotateRight(node);
+            node->left = leftRotate(node->left); // LR
+            return rightRotate(node);
         }
     }
 
-    // Right Heavy
+    // right heavy
     if (balance < -1) {
         if (getBalance(node->right) <= 0)
-            return rotateLeft(node); // RR
+            return leftRotate(node); // RR
         else {
-            node->right = rotateRight(node->right); // RL
-            return rotateLeft(node);
+            node->right = rightRotate(node->right); // RL
+            return leftRotate(node);
         }
     }
 
     return node;
 }
 
+// remove() wrapper
 string AVL::remove(const string& ufid) {
     bool success = false;
     root = remove(root, ufid, success);
     return success ? "successful" : "unsuccessful";
 }
 
-// === Search by ID (single result) ===
+// the search functions:
+
 AVL::Node* AVL::searchByID(Node* node, const string& ufid) {
     if (!node) return nullptr;
     if (ufid == node->UFID) return node;
@@ -196,7 +221,7 @@ string AVL::searchByID(const string& ufid) {
     return result ? result->name : "unsuccessful";
 }
 
-// === Search by Name (may be multiple matches) ===
+// when searching names, more than one may pop up, so we have to account for that correctly
 void AVL::searchByName(Node* node, const string& name, vector<string>& matches) {
     if (!node) return;
 
@@ -210,8 +235,8 @@ void AVL::searchByName(Node* node, const string& name, vector<string>& matches) 
 
 vector<string> AVL::searchByName(const string& name) {
     vector<string> matches;
-    // Traverse in pre-order (for required output order)
     vector<Node*> stack;
+
     if (root) stack.push_back(root);
 
     while (!stack.empty()) {
@@ -221,7 +246,7 @@ vector<string> AVL::searchByName(const string& name) {
         if (current->name == name)
             matches.push_back(current->UFID);
 
-        // Push right first so left is processed first
+        // push right first so left is processed first
         if (current->right) stack.push_back(current->right);
         if (current->left) stack.push_back(current->left);
     }
@@ -229,9 +254,12 @@ vector<string> AVL::searchByName(const string& name) {
     return matches;
 }
 
+// level count is just the height of the tree
 int AVL::printLevelCount() {
     return getHeight(root);
 }
+
+// tree traversals, all 3 with public wrappers
 
 void AVL::inorder(Node* node, vector<string>& result) {
     if (!node) return;
@@ -272,21 +300,22 @@ vector<string> AVL::printPostorder() {
     return result;
 }
 
-void AVL::inorderCollect(Node* node, vector<string>& ids) {
+// helper for the removeInorder function
+void AVL::gettingIDsInorder(Node* node, vector<string>& ids) {
     if (!node) return;
-    inorderCollect(node->left, ids);
-    ids.push_back(node->UFID);  // Store GatorID (not name)
-    inorderCollect(node->right, ids);
+    gettingIDsInorder(node->left, ids);
+    ids.push_back(node->UFID);  // we're handling IDs here, not names
+    gettingIDsInorder(node->right, ids);
 }
 
 void AVL::removeInorder(int N) {
     vector<string> ids;
-    inorderCollect(root, ids);
+    gettingIDsInorder(root, ids);
 
-    if (N < 0 || N >= static_cast<int>(ids.size())) {
+    if (N < 0 || N >= int(ids.size())) {
         cout << "unsuccessful" << endl;
         return;
     }
 
-    remove(ids[N]); // Reuse your existing AVL remove logic
+    remove(ids[N]); // simply calling remove with Nth ID
 }

@@ -81,36 +81,6 @@ int main() {
             cout << tree.remove(id) << endl;
 
         }
-		// else if (command == "search") {
-        //     string remaining;
-        //     getline(ss, remaining);
-        //     int quoteStart = remaining.find('"');
-        //     if (quoteStart != string::npos) {
-        //         int quoteEnd = remaining.rfind('"');
-        //         if (quoteEnd == string::npos || quoteEnd == quoteStart) {
-        //             cout << "unsuccessful\n";
-        //             continue;
-        //         }
-        //         string name = remaining.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
-        //         if (!isValidName(name)) {
-        //             cout << "unsuccessful\n";
-        //             continue;
-        //         }
-        //         // searchByName(name); <-- implement this later
-        //         cout << "successful\n";
-        //     } 
-		// 	else {
-        //         string id;
-        //         ss >> id;
-        //         if (!isValidUFID(id)) {
-        //             cout << "unsuccessful\n";
-        //             continue;
-        //         }
-        //         // searchByID(id); <-- implement this later
-        //         cout << "successful\n";
-        //     }
-
-        // }
         else if (command == "search") {
             string nextToken;
             ss >> nextToken;
@@ -139,7 +109,7 @@ int main() {
 
                 else {
                     for (const auto& id : results) {
-                        cout << id << "\n";
+                        cout << id << endl;
                     }
                 }
             } 
@@ -147,49 +117,52 @@ int main() {
             else {
                 // search ID
                 string id = nextToken;
+
                 if (!isValidUFID(id)) {
                     cout << "unsuccessful\n";
                     continue;
                 }
 
-                cout << tree.searchByID(id) << "\n";
+                cout << tree.searchByID(id) << endl;
             }
         }
-
-		// else if (command == "printInorder" || command == "printPreorder" || 
-        //            command == "printPostorder" || command == "printLevelCount") {
-        //     // Call corresponding function later
-        //     cout << "successful\n";
-
-        // }
 
         else if (command == "printInorder") {
             vector<string> names = tree.printInorder();
+
             for (size_t i = 0; i < names.size(); ++i) {
                 cout << names[i];
                 if (i != names.size() - 1)
                     cout << ", ";
             }
+
             cout << endl;
         }
+
         else if (command == "printPreorder") {
             vector<string> names = tree.printPreorder();
+
             for (size_t i = 0; i < names.size(); ++i) {
                 cout << names[i];
                 if (i != names.size() - 1)
                     cout << ", ";
             }
+
             cout << endl;
         }
+
         else if (command == "printPostorder") {
             vector<string> names = tree.printPostorder();
+
             for (size_t i = 0; i < names.size(); ++i) {
                 cout << names[i];
                 if (i != names.size() - 1)
                     cout << ", ";
             }
+
             cout << endl;
         }
+
         else if (command == "printLevelCount") {
             cout << tree.printLevelCount() << endl;
         }
