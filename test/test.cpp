@@ -28,6 +28,14 @@ TEST_CASE("Invalid insert and command handling", "[validation]") {
         string name = invalidInputs[i].first;
         string ufid = invalidInputs[i].second;
         string result = tree.insert(name, ufid);
+        cout << "Trying: " << name << " " << ufid << " => " << result << endl;
+        REQUIRE(result == "unsuccessful");
+    }
+
+    for (size_t i = 0; i < invalidInputs.size(); ++i) {
+        string name = invalidInputs[i].first;
+        string ufid = invalidInputs[i].second;
+        string result = tree.insert(name, ufid);
         REQUIRE(result == "unsuccessful");
     }
 }

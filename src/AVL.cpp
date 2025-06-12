@@ -62,6 +62,30 @@ AVL::Node* AVL::leftRotate(Node* x) {
     return y; // this is our new root after rotation
 }
 
+// due to time constraints, I need the following two functions from main also to be here to validate inputs correctly in insert(),
+// main works correctly without it, but insert() needs to validate inputs in a standalone way too to pass tests.
+
+bool isValidName(const string& name) {
+    for (char ch : name) {
+        if (!isalpha(ch) && ch != ' ')
+            return false;
+    }
+
+    return true;
+}
+
+bool isValidUFID(const string& id) {
+    if (id.length() != 8)
+        return false;
+
+    for (char ch : id) {
+        if (!isdigit(ch))
+            return false;
+    }
+
+    return true;
+}
+
 AVL::Node* AVL::insert(Node* node, const string& name, const string& ufid, bool& success) {
     if (!node) {
         success = true;
@@ -109,6 +133,10 @@ AVL::Node* AVL::insert(Node* node, const string& name, const string& ufid, bool&
 
 // having an insert wrapper makes things easier to understand and read for me
 string AVL::insert(const string& name, const string& ufid) {
+    if (!isValidName(name) || !isValidUFID(ufid)) {
+        return "unsuccessful";
+    }
+
     bool success = false;
     root = insert(root, name, ufid, success);
     return success ? "successful" : "unsuccessful";
