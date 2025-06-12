@@ -137,7 +137,8 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
             ufid = to_string(id);
         } while (!ufidSet.insert(ufid).second); // somehow found a way to make sure they are unique, a little excessive but o well
 
-        tree.insert(name, ufid);
+        string result = tree.insert(name, ufid);
+        REQUIRE(result == "successful");
         allNames.push_back(name);
         allUFIDs.push_back(ufid);
     }
