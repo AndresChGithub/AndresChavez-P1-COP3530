@@ -59,7 +59,7 @@ public:
     string insert(const string& name, const string& ufid);
 
     string remove(const string& ufid);
-    void removeInorder(int n);
+    bool removeInorder(int n);
 
     string searchByID(const string& ufid);
     vector<string> searchByName(const string& name);

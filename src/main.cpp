@@ -170,10 +170,12 @@ int main() {
 		else if (command == "removeInorder") {
             int n;
             ss >> n;
-            tree.removeInorder(n);
-            cout << "succesful" << endl;
+            if (tree.removeInorder(n))
+                cout << "successful" << endl;
+            else
+                cout << "unsuccessful" << endl;
         }
-
+        
         else {
             cout << "unsuccessful\n";
         }

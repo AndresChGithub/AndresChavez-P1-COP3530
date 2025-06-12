@@ -308,14 +308,14 @@ void AVL::gettingIDsInorder(Node* node, vector<string>& ids) {
     gettingIDsInorder(node->right, ids);
 }
 
-void AVL::removeInorder(int N) {
+bool AVL::removeInorder(int N) {
     vector<string> ids;
     gettingIDsInorder(root, ids);
 
-    if (N < 0 || N >= int(ids.size())) {
-        cout << "unsuccessful" << endl;
-        return;
+    if (N < 0 || N >= static_cast<int>(ids.size())) {
+        return false;
     }
 
     remove(ids[N]); // simply calling remove with Nth ID
+    return true;
 }
