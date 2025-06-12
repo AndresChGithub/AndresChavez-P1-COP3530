@@ -51,7 +51,7 @@ int main() {
             size_t firstQuote = line.find('"');
             size_t lastQuote = line.rfind('"');
             if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
-                cout << "unsuccessful\n";
+                cout << "unsuccessful" << endl;
                 continue;
             }
 
@@ -62,25 +62,27 @@ int main() {
             ss >> id;
 
             if (!isValidName(name) || !isValidUFID(id)) {
-                cout << "unsuccessful\n";
+                cout << "unsuccessful" << endl;
                 continue;
             }
 
             cout << tree.insert(name, id) << endl;
 
         }
+
 		else if (command == "remove") {
             string id;
             ss >> id;
 
             if (!isValidUFID(id)) {
-                cout << "unsuccessful\n";
+                cout << "unsuccessful" << endl;
                 continue;
             }
 
             cout << tree.remove(id) << endl;
 
         }
+
         else if (command == "search") {
             string nextToken;
             ss >> nextToken;
@@ -91,20 +93,20 @@ int main() {
                 size_t lastQuote = line.rfind('"');
 
                 if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
-                    cout << "unsuccessful\n";
+                    cout << "unsuccessful" << endl;
                     continue;
                 }
 
                 string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
 
                 if (!isValidName(name)) {
-                    cout << "unsuccessful\n";
+                    cout << "unsuccessful" << endl;
                     continue;
                 }
 
                 vector<string> results = tree.searchByName(name);
                 if (results.empty()) {
-                    cout << "unsuccessful\n";
+                    cout << "unsuccessful" << endl;
                 } 
 
                 else {
@@ -119,7 +121,7 @@ int main() {
                 string id = nextToken;
 
                 if (!isValidUFID(id)) {
-                    cout << "unsuccessful\n";
+                    cout << "unsuccessful" << endl;
                     continue;
                 }
 
@@ -137,6 +139,7 @@ int main() {
             }
 
             cout << endl;
+            
         }
 
         else if (command == "printPreorder") {
@@ -175,7 +178,7 @@ int main() {
             else
                 cout << "unsuccessful" << endl;
         }
-        
+
         else {
             cout << "unsuccessful\n";
         }
