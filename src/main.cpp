@@ -30,158 +30,162 @@ bool isValidUFID(const string& id) {
 }
 
 int main() {
-    int commandCount;
-    cin >> commandCount;
-    cin.ignore();  // To skip the newline after the number
-
     AVL tree;
+    int commandCount;
 
-    for (int i = 0; i < commandCount; ++i) {
-        string line;
-        getline(cin, line);
+    while (cin >> commandCount) {
+        
+        cin.ignore(); // To skip the newline after the number
+    
 
-        istringstream ss(line);
-        string command;
-        ss >> command;
+        for (int i = 0; i < commandCount; ++i) {
+            string line;
+            getline(cin, line);
 
-        if (command == "insert") {
-            string name;
-            string id;
+            istringstream ss(line);
+            string command;
+            ss >> command;
 
-            // Parse name (surrounded by quotes)
-            size_t firstQuote = line.find('"');
-            size_t lastQuote = line.rfind('"');
-            if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
-                cout << "unsuccessful" << endl;
-                continue;
-            }
+            if (command == "insert") {
+                string name;
+                string id;
 
-            name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
-
-            ss.clear();
-            ss.str(line.substr(lastQuote + 1));
-            ss >> id;
-
-            if (!isValidName(name) || !isValidUFID(id)) {
-                cout << "unsuccessful" << endl;
-                continue;
-            }
-
-            cout << tree.insert(name, id) << endl;
-
-        }
-
-		else if (command == "remove") {
-            string id;
-            ss >> id;
-
-            if (!isValidUFID(id)) {
-                cout << "unsuccessful" << endl;
-                continue;
-            }
-
-            cout << tree.remove(id) << endl;
-
-        }
-
-        else if (command == "search") {
-            string nextToken;
-            ss >> nextToken;
-
-            if (nextToken.front() == '"') {
-                // search NAME
+                // Parse name (surrounded by quotes)
                 size_t firstQuote = line.find('"');
                 size_t lastQuote = line.rfind('"');
-
                 if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
                     cout << "unsuccessful" << endl;
                     continue;
                 }
 
-                string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
+                name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
 
-                if (!isValidName(name)) {
+                ss.clear();
+                ss.str(line.substr(lastQuote + 1));
+                ss >> id;
+
+                if (!isValidName(name) || !isValidUFID(id)) {
                     cout << "unsuccessful" << endl;
                     continue;
                 }
 
-                vector<string> results = tree.searchByName(name);
-                if (results.empty()) {
-                    cout << "unsuccessful" << endl;
-                } 
+                cout << tree.insert(name, id) << endl;
 
-                else {
-                    for (const auto& id : results) {
-                        cout << id << endl;
-                    }
-                }
-            } 
+            }
 
-            else {
-                // search ID
-                string id = nextToken;
+            else if (command == "remove") {
+                string id;
+                ss >> id;
 
                 if (!isValidUFID(id)) {
                     cout << "unsuccessful" << endl;
                     continue;
                 }
 
-                cout << tree.searchByID(id) << endl;
-            }
-        }
+                cout << tree.remove(id) << endl;
 
-        else if (command == "printInorder") {
-            vector<string> names = tree.printInorder();
-
-            for (size_t i = 0; i < names.size(); ++i) {
-                cout << names[i];
-                if (i != names.size() - 1)
-                    cout << ", ";
             }
 
-            cout << endl;
+            else if (command == "search") {
+                string nextToken;
+                ss >> nextToken;
 
-        }
+                if (nextToken.front() == '"') {
+                    // search NAME
+                    size_t firstQuote = line.find('"');
+                    size_t lastQuote = line.rfind('"');
 
-        else if (command == "printPreorder") {
-            vector<string> names = tree.printPreorder();
+                    if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
+                        cout << "unsuccessful" << endl;
+                        continue;
+                    }
 
-            for (size_t i = 0; i < names.size(); ++i) {
-                cout << names[i];
-                if (i != names.size() - 1)
-                    cout << ", ";
+                    string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
+
+                    if (!isValidName(name)) {
+                        cout << "unsuccessful" << endl;
+                        continue;
+                    }
+
+                    vector<string> results = tree.searchByName(name);
+                    if (results.empty()) {
+                        cout << "unsuccessful" << endl;
+                    } 
+
+                    else {
+                        for (const auto& id : results) {
+                            cout << id << endl;
+                        }
+                    }
+                } 
+
+                else {
+                    // search ID
+                    string id = nextToken;
+
+                    if (!isValidUFID(id)) {
+                        cout << "unsuccessful" << endl;
+                        continue;
+                    }
+
+                    cout << tree.searchByID(id) << endl;
+                }
             }
 
-            cout << endl;
-        }
+            else if (command == "printInorder") {
+                vector<string> names = tree.printInorder();
 
-        else if (command == "printPostorder") {
-            vector<string> names = tree.printPostorder();
+                for (size_t i = 0; i < names.size(); ++i) {
+                    cout << names[i];
+                    if (i != names.size() - 1)
+                        cout << ", ";
+                }
 
-            for (size_t i = 0; i < names.size(); ++i) {
-                cout << names[i];
-                if (i != names.size() - 1)
-                    cout << ", ";
+                cout << endl;
+
             }
 
-            cout << endl;
-        }
+            else if (command == "printPreorder") {
+                vector<string> names = tree.printPreorder();
 
-        else if (command == "printLevelCount") {
-            cout << tree.printLevelCount() << endl;
-        }
+                for (size_t i = 0; i < names.size(); ++i) {
+                    cout << names[i];
+                    if (i != names.size() - 1)
+                        cout << ", ";
+                }
 
-		else if (command == "removeInorder") {
-            int n;
-            ss >> n;
-            if (tree.removeInorder(n))
-                cout << "successful" << endl;
-            else
-                cout << "unsuccessful" << endl;
-        }
+                cout << endl;
+            }
 
-        else {
-            cout << "unsuccessful\n";
+            else if (command == "printPostorder") {
+                vector<string> names = tree.printPostorder();
+
+                for (size_t i = 0; i < names.size(); ++i) {
+                    cout << names[i];
+                    if (i != names.size() - 1)
+                        cout << ", ";
+                }
+
+                cout << endl;
+            }
+
+            else if (command == "printLevelCount") {
+                cout << tree.printLevelCount() << endl;
+            }
+
+            else if (command == "removeInorder") {
+                int n;
+                ss >> n;
+                if (tree.removeInorder(n))
+                    cout << "successful" << endl;
+                else
+                    cout << "unsuccessful" << endl;
+            }
+
+            else {
+                cout << "unsuccessful\n";
+            }
+
         }
 
     }
