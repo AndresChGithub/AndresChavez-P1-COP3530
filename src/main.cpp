@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// need this functions to validate inputs
 bool isValidName(const string& name) {
     for (char ch : name) {
         if (!isalpha(ch) && ch != ' ')
@@ -139,7 +140,7 @@ int main() {
             }
 
             cout << endl;
-            
+
         }
 
         else if (command == "printPreorder") {
