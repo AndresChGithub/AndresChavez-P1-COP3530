@@ -127,9 +127,14 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
     vector<string> allNames;
     vector<string> allUFIDs;
 
+    vector<string> sampleNames = {
+        "Sora", "Miko", "Mel", "Matsuri", "Ayame", "Botan", "Lui", "Pekora", "Korone",
+        "Mio", "Polka", "Lamy", "Nene", "Subaru", "Shion", "Fauna", "Bae", "Fuwamoco"
+    };
+
     // Inserting 100 unique students
     for (int i = 0; i < 100; ++i) {
-        string name = "Student" + to_string(i);
+        string name = sampleNames[i % sampleNames.size()]; // reusing names if needed
         string ufid;
 
         do {
