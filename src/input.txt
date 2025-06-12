@@ -1,0 +1,12 @@
+11
+search 12345678
+search "Adam"
+search 23456789
+insert "David" 31239830
+insert "Danielle" 27782901
+insert "David" 11133245
+search "Danielle"
+search "David"
+search 11133245
+search 27782901
+search 31239830
