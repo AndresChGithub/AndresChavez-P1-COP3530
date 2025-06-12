@@ -33,18 +33,32 @@ TEST_CASE("Invalid insert and command handling", "[validation]") {
     }
 }
 
+TEST_CASE("Edge cases", "[edge]") {
+    AVL tree;
+
+    // Removing from empty tree
+    REQUIRE(tree.remove("12345678") == "unsuccessful");
+
+    // Searching in empty tree
+    REQUIRE(tree.searchByID("12345678") == "unsuccessful");
+    vector<string> res = tree.searchByName("Nobody");
+    REQUIRE(res.empty());
+
+    // Valid insert and duplicate insert
+    REQUIRE(tree.insert("Alpha", "11111111") == "successful");
+    REQUIRE(tree.insert("Alpha", "11111111") == "unsuccessful"); // duplicate
+}
+
 TEST_CASE("AVL insert with all rotations", "[rotation]") {
     AVL tree;
 
     SECTION("Right Rotation (LL)") {
-        tree.insert("A", "33334444");
+        tree.insert("C", "33334444");
         tree.insert("B", "22223333");
-        tree.insert("C", "11112222");
+        tree.insert("A", "11112222");
+
         vector<string> inorder = tree.printInorder();
-        vector<string> expected = {"C", "B", "A"};
-        sort(expected.begin(), expected.end());
-        sort(inorder.begin(), inorder.end());
-        REQUIRE(inorder == expected);
+        REQUIRE(inorder == vector<string>{"A", "B", "C"});
     }
 
     SECTION("Left Rotation (RR)") {
@@ -52,21 +66,19 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree2.insert("A", "11112222");
         tree2.insert("B", "22223333");
         tree2.insert("C", "33334444");
+
         vector<string> inorder = tree2.printInorder();
-        vector<string> expected = {"A", "B", "C"};
-        REQUIRE(inorder == expected);
+        REQUIRE(inorder == vector<string>{"A", "B", "C"});
     }
 
     SECTION("Left-Right Rotation (LR)") {
         AVL tree3;
-        tree3.insert("A", "33334444");
-        tree3.insert("C", "11112222");
+        tree3.insert("C", "33334444");
+        tree3.insert("A", "11112222");
         tree3.insert("B", "22223333");
+
         vector<string> inorder = tree3.printInorder();
-        vector<string> expected = {"C", "B", "A"};
-        sort(expected.begin(), expected.end());
-        sort(inorder.begin(), inorder.end());
-        REQUIRE(inorder == expected);
+        REQUIRE(inorder == vector<string>{"A", "B", "C"});
     }
 
     SECTION("Right-Left Rotation (RL)") {
@@ -74,10 +86,32 @@ TEST_CASE("AVL insert with all rotations", "[rotation]") {
         tree4.insert("A", "11112222");
         tree4.insert("C", "33334444");
         tree4.insert("B", "22223333");
+
         vector<string> inorder = tree4.printInorder();
-        vector<string> expected = {"A", "B", "C"};
-        REQUIRE(inorder == expected);
+        REQUIRE(inorder == vector<string>{"A", "B", "C"});
     }
+}
+
+TEST_CASE("All three deletion cases", "[deletion]") {
+    AVL tree;
+
+    // Insert nodes
+    tree.insert("One", "11112222");       // will become leaf
+    tree.insert("Two", "22223333");       // root
+    tree.insert("Three", "33334444");     // one child
+
+    // Delete node with no children (leaf)
+    REQUIRE(tree.remove("11112222") == "successful");
+
+    // Delete node with one child
+    REQUIRE(tree.remove("33334444") == "successful");
+
+    // Insert another for two-child scenario
+    tree.insert("One", "11112222");
+    tree.insert("Four", "44445555");
+
+    // Now root (Two) has two children: One and Four
+    REQUIRE(tree.remove("22223333") == "successful");
 }
 
 TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
