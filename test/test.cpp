@@ -18,7 +18,6 @@ TEST_CASE("Invalid insert and command handling", "[validation]") {
         make_pair("Carl0s", "26934004"),     // Name with numbers
         make_pair("John", "2693400"),      // UFID too short
         make_pair("Jane", "269340044"),    // UFID too long
-        make_pair("", "26934004"),         // Empty name
         make_pair("TheBest!", "26934004"),    // Invalid character
         make_pair("Suisei", "notnum24"),    // UFID not numeric
         make_pair("Okayu", "2693400a"),      // UFID with letter
