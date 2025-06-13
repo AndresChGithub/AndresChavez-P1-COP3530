@@ -148,23 +148,19 @@ TEST_CASE("Insert 100 nodes, remove 10, and verify in-order", "[bulk]") {
         allUFIDs.push_back(ufid);
     }
 
-    // picking 10 of the 100 unique students
-    vector<string> toRemove;
-    toRemove.push_back(allUFIDs[5]);
-    toRemove.push_back(allUFIDs[12]);
-    toRemove.push_back(allUFIDs[23]);
-    toRemove.push_back(allUFIDs[34]);
-    toRemove.push_back(allUFIDs[40]);
-    toRemove.push_back(allUFIDs[51]);
-    toRemove.push_back(allUFIDs[66]);
-    toRemove.push_back(allUFIDs[72]);
-    toRemove.push_back(allUFIDs[88]);
-    toRemove.push_back(allUFIDs[95]);
+    // picking 10 randoms of the 100 unique students
+    set<int> selectedIndices;
+    while (selectedIndices.size() < 10) {
+        int index = rand() % 100;
+        selectedIndices.insert(index);
+    }
 
-    for (size_t i = 0; i < toRemove.size(); ++i) {
-        string ufid = toRemove[i];
+    // Remove those 10 UFIDs
+    for (int index : selectedIndices) {
+        string ufid = allUFIDs[index];
         string result = tree.remove(ufid);
         REQUIRE(result == "successful");
+
         string found = tree.searchByID(ufid);
         REQUIRE(found == "unsuccessful");
     }

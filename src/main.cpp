@@ -32,6 +32,7 @@ bool isValidUFID(const string& id) {
 int main() {
     AVL tree;
     int commandCount;
+    vector<string> outputLines; // need to print all my outputs at the end to pass the autograder
 
     while (cin >> commandCount) {
         
@@ -54,7 +55,7 @@ int main() {
                 size_t firstQuote = line.find('"');
                 size_t lastQuote = line.rfind('"');
                 if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
-                    cout << "unsuccessful" << endl;
+                    outputLines.push_back("unsuccessful");
                     continue;
                 }
 
@@ -65,11 +66,11 @@ int main() {
                 ss >> id;
 
                 if (!isValidName(name) || !isValidUFID(id)) {
-                    cout << "unsuccessful" << endl;
+                    outputLines.push_back("unsuccessful");
                     continue;
                 }
 
-                cout << tree.insert(name, id) << endl;
+                outputLines.push_back(tree.insert(name, id));
 
             }
 
@@ -78,11 +79,11 @@ int main() {
                 ss >> id;
 
                 if (!isValidUFID(id)) {
-                    cout << "unsuccessful" << endl;
+                    outputLines.push_back("unsuccessful");
                     continue;
                 }
 
-                cout << tree.remove(id) << endl;
+                outputLines.push_back(tree.remove(id));
 
             }
 
@@ -96,26 +97,28 @@ int main() {
                     size_t lastQuote = line.rfind('"');
 
                     if (firstQuote == string::npos || lastQuote == string::npos || firstQuote == lastQuote) {
-                        cout << "unsuccessful" << endl;
+                        outputLines.push_back("unsuccessful");
                         continue;
                     }
 
                     string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
 
                     if (!isValidName(name)) {
-                        cout << "unsuccessful" << endl;
+                        outputLines.push_back("unsuccessful");
                         continue;
                     }
 
                     vector<string> results = tree.searchByName(name);
                     if (results.empty()) {
-                        cout << "unsuccessful" << endl;
+                        outputLines.push_back("unsuccessful");
                     } 
 
                     else {
+
                         for (const auto& id : results) {
-                            cout << id << endl;
+                            outputLines.push_back(id);
                         }
+
                     }
                 } 
 
@@ -124,70 +127,80 @@ int main() {
                     string id = nextToken;
 
                     if (!isValidUFID(id)) {
-                        cout << "unsuccessful" << endl;
+                        outputLines.push_back("unsuccessful");
                         continue;
                     }
 
-                    cout << tree.searchByID(id) << endl;
+                    outputLines.push_back(tree.searchByID(id));
+
                 }
             }
 
             else if (command == "printInorder") {
                 vector<string> names = tree.printInorder();
+                string result;
 
                 for (size_t i = 0; i < names.size(); ++i) {
-                    cout << names[i];
+                    result += names[i];
                     if (i != names.size() - 1)
-                        cout << ", ";
+                        result += ", ";
                 }
 
-                cout << endl;
+                outputLines.push_back(result);
 
             }
 
             else if (command == "printPreorder") {
                 vector<string> names = tree.printPreorder();
+                string result;
 
                 for (size_t i = 0; i < names.size(); ++i) {
-                    cout << names[i];
+                    result += names[i];
                     if (i != names.size() - 1)
-                        cout << ", ";
+                        result += ", ";
                 }
 
-                cout << endl;
+                outputLines.push_back(result);
+
             }
 
             else if (command == "printPostorder") {
                 vector<string> names = tree.printPostorder();
+                string result;
 
                 for (size_t i = 0; i < names.size(); ++i) {
-                    cout << names[i];
+                    result += names[i];
                     if (i != names.size() - 1)
-                        cout << ", ";
+                        result += ", ";
                 }
 
-                cout << endl;
+                outputLines.push_back(result);
+
             }
 
             else if (command == "printLevelCount") {
-                cout << tree.printLevelCount() << endl;
+                outputLines.push_back(to_string(tree.printLevelCount()));
             }
 
             else if (command == "removeInorder") {
                 int n;
                 ss >> n;
                 if (tree.removeInorder(n))
-                    cout << "successful" << endl;
+                    outputLines.push_back("successful");
                 else
-                    cout << "unsuccessful" << endl;
+                    outputLines.push_back("unsuccessful");
             }
 
             else {
-                cout << "unsuccessful\n";
+                outputLines.push_back("unsuccessful");
             }
 
         }
 
+    }
+
+    for (const string& line : outputLines) {
+        cout << line << endl;
     }
 
     return 0;
