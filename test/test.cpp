@@ -1,11 +1,12 @@
-#include <catch2/catch_test_macros.hpp>
+#define CATCH_CONFIG_MAIN
+#include "catch2/catch_test_macros.hpp"
 #include <iostream>
 #include <algorithm>
 #include <random>
 #include <set>
 #include <cstdlib>
 
-#include "../src/AVL.h"
+#include "AVL.h"
 
 using namespace std;
 
